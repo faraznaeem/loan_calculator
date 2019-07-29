@@ -15,16 +15,30 @@ function calculateResults(e) {
     const calculatePayments = parseFloat(years.value) * 12;
 
     const power = Math.pow(1 + calculationInterest, calculatePayments);
-    const monthly = (principal * power * calculationInterest)/(power-1);
+    const monthly = (principal * power * calculationInterest) / (power - 1);
 
-    if(isFinite(monthly)) {
+    if (isFinite(monthly)) {
         monthlyPayments.value = monthly.toFixed(2);
         totalPayments.value = (monthly * calculatePayments).toFixed(2);
         totalInterest.value = ((monthly * calculatePayments) - principal).toFixed(2);
     } else {
-        console.log('something went wrong')
+        showError('Please check your numbers')
     }
 
     e.preventDefault();
 
+}
+
+function showError(error) {
+    const errorDiv = document.createElement('div');
+    const card = document.querySelector('.card');
+    const heading = document.querySelector('.heading');
+    errorDiv.className = 'alert alert-danger'
+    errorDiv.appendChild(document.createTextNode(error));
+    card.insertBefore(errorDiv, heading)
+    setTimeout(clearError, 3000)
+}
+
+function clearError(){
+    document.querySelector('.alert').remove();
 }
